@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>You Can't Close The Popup!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <style>
+        .hover_bkgr_fricc {
+            background: rgba(0, 0, 0, .4);
+            cursor: pointer;
+            display: none;
+            height: 100%;
+            position: fixed;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 10000;
+        }
+        
+        .hover_bkgr_fricc .helper {
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+        
+        .hover_bkgr_fricc>div {
+            background-color: #fff;
+            box-shadow: 10px 10px 60px #555;
+            display: inline-block;
+            height: auto;
+            max-width: 551px;
+            min-height: 100px;
+            vertical-align: middle;
+            width: 60%;
+            position: relative;
+            border-radius: 8px;
+            padding: 15px 5%;
+        }
+        
+        .popupCloseButton:hover {
+            background-color: #ccc;
+        }
+        
+        .trigger_popup_fricc {
+            cursor: pointer;
+            font-size: 20px;
+            margin: 20px;
+            display: inline-block;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>You can't close the popup with inspect element! Block element is a different story...</h1>
+
+    <div class="hover_bkgr_fricc" id='pu'>
+        <span class="helper"></span>
+        <div>
+            <p>Try to delete this with inspect element!</p>
+        </div>
+    </div>
+
+    <script>
+        var edited = false;
+        setInterval(function() {
+            if (!edited) {
+                var someElement = document.getElementById("pu");
+
+                var someElementToString;
+
+                if (someElement.outerHTML)
+                    someElementToString = someElement.outerHTML;
+                else if (XMLSerializer)
+                    someElementToString = new XMLSerializer().serializeToString(someElement);
+                if (someElementToString != `<div class="hover_bkgr_fricc" id="pu" style="display: block;">
+        <span class="helper"></span>
+        <div>
+            <p>Try to delete this with inspect element!</p>
+        </div>
+    </div>`) {
+                    document.write(`AHA! GOT YOU!`);
+                    edited = true;
+                    throw "somebody deleted the popup! so mean.";
+                }
+
+            }
+        }, 200)
+    </script>
+
+    <script>
+        $(window).load(function() {
+            $('.hover_bkgr_fricc').show();
+        });
+    </script>
+</body>
+
+</html>
