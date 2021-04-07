@@ -68,10 +68,15 @@
         var edited = false;
         setInterval(function() {
             if (!edited) {
-                var someElement = document.getElementById("pu");
+                try {
+                    var someElement = document.getElementById("pu");
 
-                var someElementToString;
-
+                    var someElementToString;
+                } catch {
+                    document.write(`AHA! CAUGHT YOU! You deleted the popup!`);
+                    edited = true;
+                    throw "somebody deleted the popup! so mean.";
+                }
                 if (someElement.outerHTML)
                     someElementToString = someElement.outerHTML;
                 else if (XMLSerializer)
